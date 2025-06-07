@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
 
-<head>
-  <script type="module" src="script.mjs"></script>
-</head>
-
-<body>
-
-  <!--Creating a dropdown for users -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Repetition Tracker</title>
+    <script type="module" src="script.mjs"></script>
+  </head>
+  <body>
+    
+     <!--Creating a dropdown for users -->
   <label for="users">Please, choose the user: </label>
   <div>
     <select name="user" id="userId">
@@ -19,6 +21,16 @@
     </select>
   </div>
 
-</body>
+    <form id="add-agenda-form">
+      <label for="agenda-name">Agenda Name:</label>
+      <input type="text" id="agenda-name" name="agenda-name">
 
+      <label for="add-agenda-date">Add Agenda Date:</label>
+      <input type="date" id="add-agenda-date" name="add-agenda-date">
+      <br>
+      <button type="submit">Add Agenda</button>
+    </form>
+        <section id="agendas">Hi, agendas here..... Change me soon!!!</section>
+
+  </body>
 </html>
