@@ -15,7 +15,7 @@ const agendaDateInput = document.getElementById("agenda-date");
 const agendasSection = document.getElementById('agendas');
 
 agendaForm.addEventListener('submit', (event) => {
-  event.preventDefault(); // don't forget this line to stop page reload
+  event.preventDefault(); // Prevent form submission
 
   const userId = dropDown.value;
   const agendaName = agendaNameInput.value.trim();
@@ -31,11 +31,10 @@ agendaForm.addEventListener('submit', (event) => {
     return;
   }
 
-  // ✅ FIX: use 'topic' not 'text'
   const newAgenda = { topic: agendaName, date: agendaDate };
   addData(userId, [newAgenda]);
 
-  // Clear inputs
+  // Clear previous inputs
   agendaNameInput.value = '';
   agendaDateInput.value = '';
 
