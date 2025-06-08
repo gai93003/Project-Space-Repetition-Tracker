@@ -9,7 +9,46 @@ import { getData, addData, clearData } from "./storage.mjs";
 
 
 const dropDown = document.getElementById('userId');
+const agendaForm = document.getElementById("add-agenda-form");
+const agendaNameInput = document.getElementById("agenda-name");
+const agendaDateInput = document.getElementById("agenda-date");
 const agendasSection = document.getElementById('agendas');
+
+agendaForm.addEventListener('submit', (event) => {
+  event.preventDefault(); // don't forget this line to stop page reload
+
+  const userId = dropDown.value;
+  const agendaName = agendaNameInput.value.trim();
+  const agendaDate = agendaDateInput.value;
+
+  if (!userId) {
+    alert('Please select a user.');
+    return;
+  }
+
+  if (!agendaName || !agendaDate) {
+    alert('Please enter both name and date for the agenda.');
+    return;
+  }
+
+  // ✅ FIX: use 'topic' not 'text'
+  const newAgenda = { topic: agendaName, date: agendaDate };
+  addData(userId, [newAgenda]);
+
+  // Clear inputs
+  agendaNameInput.value = '';
+  agendaDateInput.value = '';
+
+  // Refresh agenda display
+  updateAgendaForUser(userId);
+});
+
+
+function updateAgendaForUser(userId) {
+  const updatedAgendas = getData(userId);
+  displayAgenda(updatedAgendas);
+}
+
 
 const populateDropdown = (users) => {
   const defaultOpt = document.createElement('option');
