@@ -4,12 +4,22 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
-import { getUserIDs } from "./common.mjs";
+import { getUserIDs, dateRepetion, dateFormat } from "./common.mjs";
 import { getData, addData, clearData } from "./storage.mjs";
 
 
 const dropDown = document.getElementById('userId');
 const agendasSection = document.getElementById('agendas');
+const topicInput = document.getElementById('agenda-name');
+const dateInput = document.getElementById('add-agenda-date');
+const submitBtn = document.getElementById('submit-btn');
+
+const formSubmission = (event) => {
+  event.preventDefault();
+
+  let topicOfRevision = topicInput.value;
+  let dateOfRevision = dateInput.value;
+}
 
 const populateDropdown = (users) => {
   const defaultOpt = document.createElement('option');
