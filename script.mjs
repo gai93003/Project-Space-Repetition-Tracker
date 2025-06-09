@@ -14,11 +14,40 @@ const topicInput = document.getElementById('agenda-name');
 const dateInput = document.getElementById('add-agenda-date');
 const submitBtn = document.getElementById('submit-btn');
 
-const formSubmission = (event) => {
-  event.preventDefault();
+const setDefaultDate = () => {
+  if (dateInput) {
+    dateInput.valueAsDate = new Date();
+    return;
+  }
+}
 
+const formSubmission = (event) => {
+  // event.preventDefault();
+
+  const userId = dropDown.value
   let topicOfRevision = topicInput.value;
   let dateOfRevision = dateInput.value;
+
+  if (!userId) {
+    alert("Please select a user before adding a topic");
+    return;
+  }
+
+  if (!topicOfRevision || !dateOfRevision) {
+    alert("Please enter a topic and a start date.");
+    return;
+  }
+
+  const newRevision = { topic: topicOfRevision, date: new Date(dateOfRevision) };
+  const repeatedRevisions = dateRepetion(newRevision);
+
+  // console.log(repeatedRevisions);
+
+  addData(userId, repeatedRevisions); // Add and store the revision dates to the localStorage
+
+  topicInput.value = '';
+  setDefaultDate();
+
 }
 
 const populateDropdown = (users) => {
@@ -60,9 +89,8 @@ const displayAgenda = (agendaItems) => {
   const ul = document.createElement('ul');
   for (const item of upcoming) {
     const li = document.createElement('li');
-    // Format date nicely (e.g. YYYY-MM-DD)
-    const dateStr = new Date(item.date).toISOString().split('T')[0];
-    li.textContent = `${item.topic}, ${dateStr}`;
+    
+    li.textContent = `${item.topic}, ${dateFormat(item.date)}`;
     ul.appendChild(li);
   }
   agendasSection.appendChild(ul);
@@ -71,6 +99,7 @@ const displayAgenda = (agendaItems) => {
 window.onload = function () {
   const users = getUserIDs();
   populateDropdown(users);
+  setDefaultDate();
 
   dropDown.addEventListener('change', () => {
     const selectedUserId = dropDown.value;
@@ -82,5 +111,12 @@ window.onload = function () {
     displayAgenda(agendaData);
   });
 
-  agendasSection.textContent = 'Please select a user to view their agenda.';
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    formSubmission(event);
+    const selectedUserId = dropDown.value;
+    const agendaData = getData(selectedUserId);
+    displayAgenda(agendaData)
+})
 };
