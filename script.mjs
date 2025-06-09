@@ -9,7 +9,7 @@ const dropDown = document.getElementById('userId');
 
 const populateDropdown = (users) => {
   const defaultOpt = document.createElement('option');
-  defaultOpt.textContent = '--Select a user--';
+  defaultOpt.textContent = 'Select a user';
   defaultOpt.value = '';
   dropDown.appendChild(defaultOpt);
 
