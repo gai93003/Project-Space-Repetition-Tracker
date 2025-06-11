@@ -119,4 +119,21 @@ window.onload = function () {
     const agendaData = getData(selectedUserId);
     displayAgenda(agendaData)
 })
+
+const clearBtn = document.getElementById('clear-btn');
+
+clearBtn.addEventListener('click', () => {
+  const selectedUserId = dropDown.value;
+  if (!selectedUserId) {
+    alert("Please select a user before clearing data.");
+    return;
+  }
+  const agendaData = getData(selectedUserId);
+  if (!agendaData || agendaData.length === 0) {
+    alert("There is no agenda to clear for this user.");
+    return;
+  }
+  clearData(selectedUserId); // This uses your imported clearData function
+  displayAgenda([]); // Clear the display
+});
 };
