@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Repetition Tracker</title>
-    <script type="module" src="script.mjs"></script>
-    <style>
-      #dropdown {
-        margin: 1rem 0;
-      }
 
-      #add-agenda-form {
-        display: flex;
-        gap: 0.5rem;
-      }
-    </style>
-  </head>
-  <body>
-    
-     <!--Creating a dropdown for users -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Repetition Tracker</title>
+  <script type="module" src="script.mjs"></script>
+  <style>
+    #dropdown {
+      margin: 1rem 0;
+    }
+
+    #add-agenda-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--Creating a dropdown for users -->
   <section id="dropdown">
     <label for="userId">Choose the user: </label>
     <select name="user" id="userId"></select>
@@ -34,6 +36,8 @@
     <button type="submit" id="submit-btn">Add Agenda</button>
   </form>
   <section id="agendas"></section>
+  <button id="clear-btn">Clear Agenda</button>
 
-  </body>
+</body>
+
 </html>
