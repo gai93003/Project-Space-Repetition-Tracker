@@ -46,7 +46,6 @@ const formSubmission = (event) => {
   addData(userId, repeatedRevisions); // Add and store the revision dates to the localStorage
 
   topicInput.value = '';
-  setDefaultDate();
 
 }
 
@@ -76,7 +75,12 @@ const displayAgenda = (agendaItems) => {
 
   // Filter out past revision dates
   const today = new Date();
-  const upcoming = agendaItems.filter(item => new Date(item.date) >= today);
+  today.setHours(0,0,0,0) // This is to make sure that only the date is compared.
+  const upcoming = agendaItems.filter(item => {
+    const itemDate = new Date(item.date);
+    itemDate.setHours(0,0,0,0);
+    return itemDate >= today
+});
 
   if (upcoming.length === 0) {
     agendasSection.textContent = 'No upcoming revisions for this user.';
