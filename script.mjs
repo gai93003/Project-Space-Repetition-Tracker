@@ -4,7 +4,7 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
-import { getUserIDs } from "./common.mjs";
+import { getUserIDs, dateRepetion, dateFormat } from "./common.mjs";
 import { getData, addData, clearData } from "./storage.mjs";
 
 
@@ -13,6 +13,44 @@ const agendaForm = document.getElementById("add-agenda-form");
 const agendaNameInput = document.getElementById("agenda-name");
 const agendaDateInput = document.getElementById("agenda-date");
 const agendasSection = document.getElementById('agendas');
+const topicInput = document.getElementById('agenda-name');
+const dateInput = document.getElementById('add-agenda-date');
+const submitBtn = document.getElementById('submit-btn');
+
+const setDefaultDate = () => {
+  if (dateInput) {
+    dateInput.valueAsDate = new Date();
+    return;
+  }
+}
+
+const formSubmission = (event) => {
+  // event.preventDefault();
+
+  const userId = dropDown.value
+  let topicOfRevision = topicInput.value;
+  let dateOfRevision = dateInput.value;
+
+  if (!userId) {
+    alert("Please select a user before adding a topic");
+    return;
+  }
+
+  if (!topicOfRevision || !dateOfRevision) {
+    alert("Please enter a topic and a start date.");
+    return;
+  }
+
+  const newRevision = { topic: topicOfRevision, date: new Date(dateOfRevision) };
+  const repeatedRevisions = dateRepetion(newRevision);
+
+  // console.log(repeatedRevisions);
+
+  addData(userId, repeatedRevisions); // Add and store the revision dates to the localStorage
+
+  topicInput.value = '';
+
+}
 
 agendaForm.addEventListener('submit', (event) => {
   event.preventDefault(); // Prevent form submission
@@ -51,7 +89,7 @@ function updateAgendaForUser(userId) {
 
 const populateDropdown = (users) => {
   const defaultOpt = document.createElement('option');
-  defaultOpt.textContent = '--Select a user--';
+  defaultOpt.textContent = 'Select a user';
   defaultOpt.value = '';
   dropDown.appendChild(defaultOpt);
 
@@ -75,7 +113,12 @@ const displayAgenda = (agendaItems) => {
 
   // Filter out past revision dates
   const today = new Date();
-  const upcoming = agendaItems.filter(item => new Date(item.date) >= today);
+  today.setHours(0,0,0,0) // This is to make sure that only the date is compared.
+  const upcoming = agendaItems.filter(item => {
+    const itemDate = new Date(item.date);
+    itemDate.setHours(0,0,0,0);
+    return itemDate >= today
+});
 
   if (upcoming.length === 0) {
     agendasSection.textContent = 'No upcoming revisions for this user.';
@@ -88,9 +131,8 @@ const displayAgenda = (agendaItems) => {
   const ul = document.createElement('ul');
   for (const item of upcoming) {
     const li = document.createElement('li');
-    // Format date nicely (e.g. YYYY-MM-DD)
-    const dateStr = new Date(item.date).toISOString().split('T')[0];
-    li.textContent = `${item.topic}, ${dateStr}`;
+    
+    li.textContent = `${item.topic}, ${dateFormat(item.date)}`;
     ul.appendChild(li);
   }
   agendasSection.appendChild(ul);
@@ -99,6 +141,7 @@ const displayAgenda = (agendaItems) => {
 window.onload = function () {
   const users = getUserIDs();
   populateDropdown(users);
+  setDefaultDate();
 
   dropDown.addEventListener('change', () => {
     const selectedUserId = dropDown.value;
@@ -110,5 +153,29 @@ window.onload = function () {
     displayAgenda(agendaData);
   });
 
-  agendasSection.textContent = 'Please select a user to view their agenda.';
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    formSubmission(event);
+    const selectedUserId = dropDown.value;
+    const agendaData = getData(selectedUserId);
+    displayAgenda(agendaData)
+})
+
+const clearBtn = document.getElementById('clear-btn');
+
+clearBtn.addEventListener('click', () => {
+  const selectedUserId = dropDown.value;
+  if (!selectedUserId) {
+    alert("Please select a user before clearing data.");
+    return;
+  }
+  const agendaData = getData(selectedUserId);
+  if (!agendaData || agendaData.length === 0) {
+    alert("There is no agenda to clear for this user.");
+    return;
+  }
+  clearData(selectedUserId); // This uses your imported clearData function
+  displayAgenda([]); // Clear the display
+});
 };

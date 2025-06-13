@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Repetition Tracker</title>
-    <script type="module" src="script.mjs"></script>
-  </head>
-  <body>
-    
-     <!--Creating a dropdown for users -->
-  <label for="userId">Please, choose the user: </label>
-  <div>
-    <select name="user" id="userId"></select>
-  </div>
 
-    <form id="add-agenda-form">
-      <label for="agenda-name">Agenda Name:</label>
-      <input type="text" id="agenda-name" name="agenda-name" placeholder="Enter agenda">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Repetition Tracker</title>
+  <script type="module" src="script.mjs"></script>
+  <style>
+    #dropdown {
+      margin: 1rem 0;
+    }
+
+    #add-agenda-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--Creating a dropdown for users -->
+  <section id="dropdown">
+    <label for="userId">Choose the user: </label>
+    <select name="user" id="userId"></select>
+  </section>
+
+  <form id="add-agenda-form">
+    <label for="agenda-name">Agenda Name:</label>
+      <input type="text" id="agenda-name" name="agenda-name" placeholder="Enter agenda" required>
 
       <label for="agenda-date">Add Agenda Date:</label>
-      <input type="date" id="agenda-date" name="agenda-date">
-      <br>
-      <button type="submit">Add Agenda</button>
-    </form>
-        <section id="agendas">Hi, agendas here..... Change me soon!!!</section>
+      <input type="date" id="add-agenda-date" name="add-agenda-date" required>
+  </form><br>
+  <button type="submit" id="submit-btn">Add Agenda</button>
+  <button id="clear-btn">Clear Agenda</button>
+  <section id="agendas"></section>
 
-  </body>
+</body>
+
 </html>
